@@ -1,0 +1,10 @@
+[package]
+name = "ix-rs"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+description = "A trait for values that permit contiguous subranges"
+repository = "https://github.com/schuelermine/ix-rs"
+keywords = ["no-std", "iterators"]
+categories = ["no-std", "no-std::no-alloc"]
