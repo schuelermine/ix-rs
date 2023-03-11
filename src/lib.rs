@@ -2,11 +2,14 @@
 
 /// A trait for values that permit contiguous subranges.
 ///
+/// Implementations that override the provided functions must ensure
+/// their custom implementations are equivalent to the provided ones.
+///
 /// Implementations must uphold the following invariants:
-/// 1. `in_range(min, max, ix)` if and only if `range(min, max).any(|x| x == ix)`
-/// 2. If `in_range(min, max, ix)`, then `range(min, max).nth(index(min, max, ix))` = `Some(ix)`
-/// 3. `range(min, max).map(|x| index(min, max, x))` yields equal items to `0..range_size(min, max)`
-/// 4. `range_size(min, max)` = `range(min, max).count()`
+/// 1. `ix.in_range(min, max)` if and only if `Ix::range(min, max).any(|x| x == ix)`
+/// 2. If `ix.in_range(min, max)`, then `Ix::range(min, max).nth(ix.index(min, max)).unwrap() == ix`
+/// 3. `Ix::range(min, max).map(|ix| ix.index(min, max))` yields equal items to `0..Ix::range_size(min, max)`
+/// 4. `Ix::range_size(min, max)` = `Ix::range(min, max).count()`
 pub trait Ix: PartialOrd + Sized {
     /// An iterator over the elements in a range of the implementing type.
     type RangeIter: Iterator<Item = Self>;
@@ -45,6 +48,8 @@ pub trait Ix: PartialOrd + Sized {
     ///
     /// Panics if the resulting index is not representable as a [`usize`].
     /// The default implementation does this by unwrapping the return value of [`range_size_checked`].
+    ///
+    /// [`range_size_checked`]: Ix::range_size_checked
     fn range_size(min: Self, max: Self) -> usize {
         Ix::range_size_checked(min, max).expect("range size too large")
     }

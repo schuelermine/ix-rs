@@ -6,17 +6,17 @@ fn ix_uphold_1<T: Ix + Copy>(min: T, max: T, ix: T) -> bool {
     if min > max {
         return true;
     }
-    Ix::in_range(min, max, ix) == Ix::range(min, max).any(|x| x == ix)
+    ix.in_range(min, max) == Ix::range(min, max).any(|x| x == ix)
 }
 
 fn ix_uphold_2<T: Ix + Copy>(min: T, max: T, ix: T) -> bool {
     if min > max {
         return true;
     }
-    if !Ix::in_range(min, max, ix) {
+    if !ix.in_range(min, max) {
         return true;
     }
-    Ix::range(min, max).nth(Ix::index(min, max, ix)) == Some(ix)
+    Ix::range(min, max).nth(ix.index(min, max)) == Some(ix)
 }
 
 fn ix_uphold_3<T: Ix + Copy>(min: T, max: T) -> bool {
@@ -24,7 +24,7 @@ fn ix_uphold_3<T: Ix + Copy>(min: T, max: T) -> bool {
         return true;
     }
     Ix::range(min, max)
-        .map(|x| Ix::index(min, max, x))
+        .map(|ix| ix.index(min, max))
         .eq(0..Ix::range_size(min, max))
 }
 
