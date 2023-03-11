@@ -1,4 +1,5 @@
 #![no_std]
+//! This crate provides a trait ([`Ix`]) for values that permit contiguous subranges.  
 
 /// A trait for values that permit contiguous subranges.
 ///
