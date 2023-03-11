@@ -23,8 +23,8 @@ impl<T: From<usize>> From<usize> for UsizeLike<T> {
 }
 
 impl<T: Into<usize> + From<usize> + PartialOrd> Ix for UsizeLike<T> {
-    type RangeIter = Map<RangeInclusive<usize>, fn(usize) -> Self>;
-    fn range(min: Self, max: Self) -> Self::RangeIter {
+    type Range = Map<RangeInclusive<usize>, fn(usize) -> Self>;
+    fn range(min: Self, max: Self) -> Self::Range {
         let min: usize = min.into();
         let max: usize = max.into();
         assert_ordered!(min, max);

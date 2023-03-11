@@ -19,8 +19,8 @@ macro_rules! assert_in_range {
 macro_rules! impl_ix_numeric {
     ($t: ty) => {
         impl $crate::Ix for $t {
-            type RangeIter = ::core::ops::RangeInclusive<$t>;
-            fn range(min: Self, max: Self) -> Self::RangeIter {
+            type Range = ::core::ops::RangeInclusive<$t>;
+            fn range(min: Self, max: Self) -> Self::Range {
                 $crate::macros::assert_ordered!(min, max);
                 min..=max
             }

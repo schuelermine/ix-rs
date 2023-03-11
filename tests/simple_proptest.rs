@@ -24,7 +24,7 @@ fn ix_uphold_3<T: Ix + Copy>(min: T, max: T) -> bool {
         return true;
     }
     Ix::range(min, max)
-        .map(|ix| ix.index(min, max))
+        .map(|x| x.index(min, max))
         .eq(0..Ix::range_size(min, max))
 }
 

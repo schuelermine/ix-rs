@@ -2,6 +2,7 @@
 
 A trait for values that permit contiguous subranges.  
 This is a port of the `Ix` class from Haskell to a trait in Rust.
+However, its use should not be limited to the original design goal.
 
 This crate provides the `Ix` trait:
 ```rs
@@ -19,3 +20,5 @@ pub trait Ix: PartialOrd + Sized {
     fn range_size(min: Self, max: Self) -> usize { ... }
 }
 ```
+
+See the [documentation](https://docs.rs/ix-rs/latest/ix_rs/trait.Ix.html) for more details.
