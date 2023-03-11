@@ -19,11 +19,17 @@ pub trait Ix: PartialOrd {
     ///
     /// Should panic if the value is not in the range (as determined by [`in_range`]).
     ///
+    /// Should panic if the resulting index is not representable as a [`usize`].
+    ///
     /// [`in_range`]: Ix::in_range
     fn index(min: Self, max: Self, ix: Self) -> usize;
     /// Check if a given value is inside a range.
     fn in_range(min: Self, max: Self, ix: Self) -> bool;
     /// Get the length of a range.
+    ///
+    /// # Panics
+    ///
+    /// Should panic if the resulting index is not representable as a [`usize`].
     fn range_size(min: Self, max: Self) -> usize;
 }
 
