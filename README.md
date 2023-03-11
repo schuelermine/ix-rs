@@ -5,11 +5,17 @@ This is a port of the `Ix` class from Haskell to a trait in Rust.
 
 This crate provides the `Ix` trait:
 ```rs
-pub trait Ix: PartialOrd {
+pub trait Ix: PartialOrd + Sized {
     type RangeIter: Iterator<Item = Self>;
+
+    // Required methods
     fn range(min: Self, max: Self) -> Self::RangeIter;
-    fn index(min: Self, max: Self, ix: Self) -> usize;
-    fn in_range(min: Self, max: Self, ix: Self) -> bool;
-    fn range_size(min: Self, max: Self) -> usize;
+    fn index_checked(self, min: Self, max: Self) -> Option<usize>;
+    fn in_range(self, min: Self, max: Self) -> bool;
+    fn range_size_checked(min: Self, max: Self) -> Option<usize>;
+
+    // Provided methods
+    fn index(self, min: Self, max: Self) -> usize { ... }
+    fn range_size(min: Self, max: Self) -> usize { ... }
 }
 ```
