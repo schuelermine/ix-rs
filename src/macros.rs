@@ -35,7 +35,7 @@ macro_rules! impl_ix_numeric {
             }
             fn range_size(min: Self, max: Self) -> usize {
                 $crate::macros::assert_ordered!(min, max);
-                (max - min) as usize
+                (max - min + 1) as usize
             }
         }
     };

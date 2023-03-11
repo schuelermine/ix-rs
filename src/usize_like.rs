@@ -49,6 +49,6 @@ impl<T: Into<usize> + From<usize> + PartialOrd> Ix for UsizeLike<T> {
         let min: usize = min.into();
         let max: usize = max.into();
         assert_ordered!(min, max);
-        max - min
+        max - min + 1
     }
 }
