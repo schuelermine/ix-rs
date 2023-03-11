@@ -7,10 +7,10 @@ However, its use should not be limited to the original design goal.
 This crate provides the `Ix` trait:
 ```rs
 pub trait Ix: PartialOrd + Sized {
-    type RangeIter: Iterator<Item = Self>;
+    type Range: Iterator<Item = Self>;
 
     // Required methods
-    fn range(min: Self, max: Self) -> Self::RangeIter;
+    fn range(min: Self, max: Self) -> Self::Range;
     fn index_checked(self, min: Self, max: Self) -> Option<usize>;
     fn in_range(self, min: Self, max: Self) -> bool;
     fn range_size_checked(min: Self, max: Self) -> Option<usize>;
