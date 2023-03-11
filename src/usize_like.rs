@@ -30,25 +30,25 @@ impl<T: Into<usize> + From<usize> + PartialOrd> Ix for UsizeLike<T> {
         assert_ordered!(min, max);
         (min..=max).map(<UsizeLike<T>>::from)
     }
-    fn index(min: Self, max: Self, ix: Self) -> usize {
+    fn index_checked(self, min: Self, max: Self) -> Option<usize> {
         let min: usize = min.into();
         let max: usize = max.into();
-        let ix: usize = ix.into();
+        let ix: usize = self.into();
         assert_ordered!(min, max);
         assert_in_range!(min, max, ix);
-        ix - min
+        Some(ix - min)
     }
-    fn in_range(min: Self, max: Self, ix: Self) -> bool {
+    fn in_range(self, min: Self, max: Self) -> bool {
         let min: usize = min.into();
         let max: usize = max.into();
-        let ix: usize = ix.into();
+        let ix: usize = self.into();
         assert_ordered!(min, max);
         min <= ix && ix <= max
     }
-    fn range_size(min: Self, max: Self) -> usize {
+    fn range_size_checked(min: Self, max: Self) -> Option<usize> {
         let min: usize = min.into();
         let max: usize = max.into();
         assert_ordered!(min, max);
-        max - min + 1
+        (max - min).checked_add(1)
     }
 }

@@ -7,7 +7,7 @@
 /// 2. If `in_range(min, max, ix)`, then `range(min, max).nth(index(min, max, ix))` = `Some(ix)`
 /// 3. `range(min, max).map(|x| index(min, max, x))` yields equal items to `0..range_size(min, max)`
 /// 4. `range_size(min, max)` = `range(min, max).count()`
-pub trait Ix: PartialOrd {
+pub trait Ix: PartialOrd + Sized {
     /// An iterator over the elements in a range of the implementing type.
     type RangeIter: Iterator<Item = Self>;
     /// Generate an iterator over a range starting from `min` and stopping at `max`.
@@ -19,18 +19,40 @@ pub trait Ix: PartialOrd {
     ///
     /// Should panic if the value is not in the range (as determined by [`in_range`]).
     ///
-    /// Should panic if the resulting index is not representable as a [`usize`].
+    /// Panics if the resulting index is not representable as a [`usize`].
+    /// The default implementation does this by unwrapping the return value of [`index_checked`].
     ///
     /// [`in_range`]: Ix::in_range
-    fn index(min: Self, max: Self, ix: Self) -> usize;
+    /// [`index_checked`]: Ix::index_checked
+    fn index(self, min: Self, max: Self) -> usize {
+        self.index_checked(min, max).expect("index too large")
+    }
+    /// Get the position of a value inside a range.
+    /// Checked version of [`index`].
+    ///
+    /// # Panics
+    ///
+    /// Should panic if the value is not in the range (as determined by [`in_range`]).
+    ///
+    /// [`index`]: Ix::index
+    /// [`in_range`]: Ix::in_range
+    fn index_checked(self, min: Self, max: Self) -> Option<usize>;
     /// Check if a given value is inside a range.
-    fn in_range(min: Self, max: Self, ix: Self) -> bool;
+    fn in_range(self, min: Self, max: Self) -> bool;
     /// Get the length of a range.
     ///
     /// # Panics
     ///
-    /// Should panic if the resulting index is not representable as a [`usize`].
-    fn range_size(min: Self, max: Self) -> usize;
+    /// Panics if the resulting index is not representable as a [`usize`].
+    /// The default implementation does this by unwrapping the return value of [`range_size_checked`].
+    fn range_size(min: Self, max: Self) -> usize {
+        Ix::range_size_checked(min, max).expect("range size too large")
+    }
+    /// Get the length of a range.
+    /// Checked version of [`range_size`].
+    ///
+    /// [`range_size`]: Ix::range_size
+    fn range_size_checked(min: Self, max: Self) -> Option<usize>;
 }
 
 mod macros;
