@@ -4,7 +4,7 @@
 ///
 /// Implementations must uphold the following invariants:
 /// 1. `in_range(min, max, ix)` if and only if `range(min, max).any(|x| x == ix)`
-/// 2. If `in_range(min, max, ix)`, then `range(min, max).nth(index(min, max, ix))` = `ix`
+/// 2. If `in_range(min, max, ix)`, then `range(min, max).nth(index(min, max, ix))` = `Some(ix)`
 /// 3. `range(min, max).map(|x| index(min, max, x))` yields equal items to `0..range_size(min, max)`
 /// 4. `range_size(min, max)` = `range(min, max).count()`
 pub trait Ix: PartialOrd {
