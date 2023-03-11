@@ -75,6 +75,7 @@ pub trait Ix: PartialOrd + Sized {
         self.index_checked(min, max).expect("index too large")
     }
     /// Get the position of a value inside a range.
+    /// If this would overflow the range of [`usize`], returns [`None`].
     /// Checked version of [`index`].
     ///
     /// # Panics
@@ -106,6 +107,7 @@ pub trait Ix: PartialOrd + Sized {
         Ix::range_size_checked(min, max).expect("range size too large")
     }
     /// Get the length of a range.
+    /// If this would overflow the range of [`usize`], returns [`None`].
     /// Checked version of [`range_size`].
     ///
     /// # Panics
