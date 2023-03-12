@@ -10,7 +10,7 @@
 /// 1. `ix.in_range(min, max)` if and only if `Ix::range(min, max).any(|x| x == ix)`
 /// 2. If `ix.in_range(min, max)`, then `Ix::range(min, max).nth(ix.index(min, max)).unwrap() == ix`
 /// 3. `Ix::range(min, max).map(|x| x.index(min, max))` yields equal items to `0..Ix::range_size(min, max)`
-/// 4. `Ix::range_size(min, max)` = `Ix::range(min, max).count()`
+/// 4. `Ix::range_size(min, max) == Ix::range(min, max).count()`
 ///
 /// # Examples
 ///
@@ -18,7 +18,15 @@
 /// # use ix_rs::Ix;
 /// for (ix, i) in Ix::range(-45i128, 483).zip(0..) {
 ///     assert_eq!(ix.index(-45, 483), i);
-/// } // Property 3
+/// }
+/// ```
+/// ```
+/// # use ix_rs::Ix;
+/// assert!(
+///     Ix::range(-633i32, 151)
+///         .map(|x| x.index(-633, 151))
+///         .eq(0..Ix::range_size(-633, 151))
+/// ) // Property 3
 /// ```
 /// ```
 /// # use ix_rs::Ix;
