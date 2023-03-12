@@ -119,18 +119,6 @@ pub trait Ix: PartialOrd + Sized {
 }
 
 mod macros;
-pub mod usize_like;
 use macros::impl_ix_numeric;
 
-impl_ix_numeric!(u8);
-impl_ix_numeric!(u16);
-impl_ix_numeric!(u32);
-impl_ix_numeric!(u64);
-impl_ix_numeric!(u128);
-impl_ix_numeric!(i8);
-impl_ix_numeric!(i16);
-impl_ix_numeric!(i32);
-impl_ix_numeric!(i64);
-impl_ix_numeric!(i128);
-impl_ix_numeric!(usize);
-impl_ix_numeric!(isize);
+impl_ix_numeric!(u8, u16, u32, u64, u128, i8, i16, i32, i64, i128, usize, isize);
