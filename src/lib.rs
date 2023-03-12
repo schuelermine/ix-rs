@@ -22,11 +22,14 @@
 /// ```
 /// ```
 /// # use ix_rs::Ix;
-/// assert!(
-///     Ix::range(-633i32, 151)
-///         .map(|x| x.index(-633, 151))
-///         .eq(0..Ix::range_size(-633, 151))
-/// ) // Property 3
+/// assert!(!(-30289i16).in_range(-746, 15564));
+/// ```
+/// ```
+/// # use ix_rs::Ix;
+/// assert_eq!(
+///     2410117514u32.in_range(2073922791, 3401563124),
+///     Ix::range(2073922791u32, 3401563124).any(|x| x == 2410117514)
+/// ); // Property 1
 /// ```
 /// ```
 /// # use ix_rs::Ix;
@@ -36,20 +39,17 @@
 /// ```
 /// ```
 /// # use ix_rs::Ix;
-/// assert!(!(-30289i16).in_range(-746, 15564));
-/// ```
-/// ```
-/// # use ix_rs::Ix;
 /// assert!(0.in_range(-31597i16, 16417));
 /// assert_eq!(Ix::range(-31597i16, 16417).nth(0.index(-31597i16, 16417)).unwrap(), 0);
 /// // Property 2
 /// ```
 /// ```
 /// # use ix_rs::Ix;
-/// assert_eq!(
-///     2410117514u32.in_range(2073922791, 3401563124),
-///     Ix::range(2073922791u32, 3401563124).any(|x| x == 2410117514)
-/// ); // Property 1
+/// assert!(
+///     Ix::range(-633i32, 151)
+///         .map(|x| x.index(-633, 151))
+///         .eq(0..Ix::range_size(-633, 151))
+/// ) // Property 3
 /// ```
 /// ```
 /// # use ix_rs::Ix;
