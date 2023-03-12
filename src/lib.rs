@@ -137,9 +137,9 @@ macro_rules! assert_ordered {
 macro_rules! assert_in_range {
     ($min: expr, $max: expr, $ix: expr) => {
         if $ix < $min {
-            panic!("ix is outside range (self < min)");
+            panic!("index is outside range (< min)");
         } else if $ix > $max {
-            panic!("ix is outside range (self > max)");
+            panic!("index is outside range (> max)");
         }
     };
 }
