@@ -8,9 +8,13 @@
 ///
 /// Implementations must uphold the following invariants:
 /// 1. `ix.in_range(min, max)` if and only if `Ix::range(min, max).any(|x| x == ix)`
-/// 2. If `ix.in_range(min, max)`, then `Ix::range(min, max).nth(ix.index(min, max)).unwrap() == ix`
+/// 2. If `ix.in_range(min, max)`, then `Ix::range(min, max).nth(ix.index(min, max)) == Some(ix)`
 /// 3. `Ix::range(min, max).map(|x| x.index(min, max))` yields equal items to `0..Ix::range_size(min, max)`
-/// 4. `Ix::range_size(min, max) == Ix::range(min, max).count()`
+/// 4. `Ix::range(min, max).map(|x| x.index_checked(min, max))` ever yields [`None`] if and only if `Ix::range_size_checked(min, max).is_none()`
+/// 5. `Ix::range_size(min, max) == Ix::range(min, max).count()`
+/// 6. `Ix::range_size_checked(min, max).is_none()` if and only if `Ix::range(min, max).count()` overflows or panics
+///
+/// Note that, for these properties, if one side of the equality panics or overflows the equality can be considered to hold.
 ///
 /// # Examples
 ///
@@ -54,7 +58,7 @@
 /// ```
 /// # use ix_rs::Ix;
 /// assert_eq!(Ix::range(8079u32, 1836091).count(), Ix::range_size(8079u32, 1836091))
-/// // Property 4
+/// // Property 5
 /// ```
 pub trait Ix: PartialOrd + Sized {
     /// An iterator over the elements in a range of the implementing type.
@@ -74,7 +78,7 @@ pub trait Ix: PartialOrd + Sized {
     ///
     /// Should panic if the value is not in the range (as determined by [`in_range`]).
     ///
-    /// Panics if the resulting index is not representable as a [`usize`].
+    /// Panics if the resulting index is not representable as a [`usize`] value.
     /// The default implementation does this by unwrapping the return value of [`index_checked`].
     ///
     /// [`in_range`]: Ix::in_range
@@ -107,7 +111,7 @@ pub trait Ix: PartialOrd + Sized {
     ///
     /// Should panic if `min` is greater than `max`.
     ///
-    /// Panics if the resulting index is not representable as a [`usize`].
+    /// Panics if the resulting size is not representable as a [`usize`] value.
     /// The default implementation does this by unwrapping the return value of [`range_size_checked`].
     ///
     /// [`range_size_checked`]: Ix::range_size_checked

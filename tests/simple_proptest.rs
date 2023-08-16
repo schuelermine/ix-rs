@@ -20,19 +20,47 @@ fn ix_uphold_2<T: Ix + Copy>(min: T, max: T, ix: T) -> bool {
 }
 
 fn ix_uphold_3<T: Ix + Copy>(min: T, max: T) -> bool {
+    ix_check_3(min, max).unwrap_or(true)
+}
+
+fn ix_check_3<T: Ix + Copy>(min: T, max: T) -> Option<bool> {
     if min > max {
-        return true;
+        return None;
     }
-    Ix::range(min, max)
-        .map(|x| x.index(min, max))
-        .eq(0..Ix::range_size(min, max))
+    for (ix, i) in Ix::range(min, max)
+        .map(|x| x.index_checked(min, max))
+        .zip(0..Ix::range_size_checked(min, max)?)
+    {
+        if ix? != i {
+            return Some(false);
+        }
+    }
+    Some(true)
 }
 
 fn ix_uphold_4<T: Ix + Copy>(min: T, max: T) -> bool {
     if min > max {
         return true;
     }
+    Ix::range(min, max)
+        .map(|x| x.index_checked(min, max))
+        .any(|ix| ix.is_none())
+        == Ix::range_size_checked(min, max).is_none()
+}
+
+fn ix_uphold_5<T: Ix + Copy>(min: T, max: T) -> bool {
+    if min > max {
+        return true;
+    }
     Ix::range_size(min, max) == Ix::range(min, max).count()
+}
+
+fn ix_uphold_6<T: Ix + Copy + std::panic::RefUnwindSafe>(min: T, max: T) -> bool {
+    if min > max {
+        return true;
+    }
+    Ix::range_size_checked(min, max).is_none()
+        == std::panic::catch_unwind(|| Ix::range(min, max).count()).is_err()
 }
 
 macro_rules! r {
@@ -66,6 +94,14 @@ macro_rules! proptest_ix_uphold_some_numeric {
                 #[test]
                 fn [<proptest_ix_uphold_4_ $t _ $x>](min in r!($t, $x), max in r!($t, $x)) {
                     prop_assert!(ix_uphold_4(min, max))
+                }
+                #[test]
+                fn [<proptest_ix_uphold_5_ $t _ $x>](min in r!($t, $x), max in r!($t, $x)) {
+                    prop_assert!(ix_uphold_5(min, max))
+                }
+                #[test]
+                fn [<proptest_ix_uphold_6_ $t _ $x>](min in r!($t, $x), max in r!($t, $x)) {
+                    prop_assert!(ix_uphold_6(min, max))
                 }
             }
         }

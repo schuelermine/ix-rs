@@ -2,7 +2,6 @@
 
 A trait for values that permit contiguous subranges.  
 This is a port of the `Ix` class from Haskell to a trait in Rust.
-However, its use should not be limited to the original design goal.
 
 This crate provides the `Ix` trait:
 ```rs
